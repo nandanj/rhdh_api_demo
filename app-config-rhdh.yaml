@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: backstage-backend-auth-config
+  namespace: backstage # IMPORTANT: Replace with your actual project namespace (e.g., 'backstage', 'developer-hub')
+data:
+  backend-auth.yaml: |
+    backend:
+      auth:
+        externalAccess:
+          - type: static
+            options:
+              # use this as the bearer token
+              token: foobarbaz
+              subject: software-template-trigger

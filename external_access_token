@@ -1,0 +1,7 @@
+backend:
+  auth:
+    externalAccess:
+      - type: static
+        options:
+          token: ${RHDH_API_TOKEN}
+          subject: software-template-trigger
