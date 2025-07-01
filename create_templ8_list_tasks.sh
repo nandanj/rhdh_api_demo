@@ -7,27 +7,6 @@ BEARER_TOKEN="foobarbaz"
 #HOST="gitlab-gitlab.apps.cluster-hwq26.hwq26.sandbox558.opentlc.com"
 HOST="gitlab-gitlab.apps.cluster-tvwbg.tvwbg.sandbox1943.opentlc.com"
 
-
-# curl -k -X POST "$API_BASE_URL/api/scaffolder/v2/tasks" \
-#   -H "Content-Type: application/json" \
-#   -H "Authorization: Bearer $BEARER_TOKEN" \
-#   -d '{
-#     "templateRef": "template:default/template-quarkus-simple",
-#     "values": {
-#       "firstName": "nandan",
-#       "lastName": "joshi",
-#       "username": "wfuser",
-#       "personalAccessToken": "_EXAMPLE", 
-#       "nexusUsername": "n_EXAMPLE", 
-#       "nexusPassword": "nx_pwd_EXAMPLE"
-#     },
-#     "secrets": {
-#       "personalAccessToken": "_EXAMPLE",
-#       "nexusUsername": "n_EXAMPLE",
-#       "nexusPassword": "nx_pwd_EXAMPLE"
-#     }
-#   }'
-
 # create a template for the quarkus web app
 curl -k -X POST "$API_BASE_URL/api/scaffolder/v2/tasks" \
   -H "Content-Type: application/json" \
