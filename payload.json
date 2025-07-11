@@ -1,0 +1,11 @@
+{
+  "inputData": {
+    "namespace": "dev1-small-1",
+    "requester": "dev1",
+    "size": "small",
+    "reason": "Need a small namespace for project X",
+    "recipients": [
+    "user:default/dev1"
+    ]
+  }
+}

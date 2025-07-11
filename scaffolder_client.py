@@ -80,7 +80,7 @@ def create_scaffolder_task():
     task_payload = {
         "templateRef": "template:default/quarkus-web-template-api-compat-gitlab", # Replace with an actual template ID if known
         "values": {
-          "component_id": "my-py-alpha-test",
+          "component_id": "ssa-grp-testapp",
           "description": "simple Quarkus app",
           "group_id": "qgroup",
           "artifact_id": "qartifact",
@@ -122,8 +122,8 @@ def list_scaffolder_tasks(created_by=None, status=None):
     if tasks:
         print(f"Found {len(tasks)} Task(s):")
         for task in tasks:
-            taskdict=json.loads(task)
-            print(f"  ID: {taskdict.get('id')}")
+            #taskdict=json.loads(task)
+            #print(f"  ID: {taskdict.get('id')}")
                   
             print(f"  ID: {task.get('id')}, Status: {task.get('status')}, Created By: {task.get('createdBy')}, Template: {task.get('templateRef')}")
     else:
@@ -139,11 +139,11 @@ if __name__ == "__main__":
     created_task_id = create_scaffolder_task()
 
     # # 3. List tasks (optional: filter by the user we just used)
-    if created_task_id:
-      print("\n--- Listing Tasks filtered by the user who created it ---")
-      list_scaffolder_tasks(created_by="scaffolder-app-user")
+    #if created_task_id:
+    #  print("\n--- Listing Tasks filtered by the user who created it ---")
+     # list_scaffolder_tasks(created_by="scaffolder-app-user")
 
     #print("\n--- Listing All Tasks ---")
-    list_scaffolder_tasks()
+    #list_scaffolder_tasks()
 
     print("\n--- Script Finished ---")

@@ -1,0 +1,302 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  annotations:
+    deployment.kubernetes.io/revision: "35"
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"apps/v1","kind":"Deployment","metadata":{"annotations":{},"labels":{"app.kubernetes.io/component":"backstage","app.kubernetes.io/instance":"backstage","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"developer-hub","helm.sh/chart":"upstream-1.9.1","rht-gitops.com/openshift-gitops":"backstage"},"name":"backstage-developer-hub","namespace":"backstage"},"spec":{"replicas":1,"revisionHistoryLimit":10,"selector":{"matchLabels":{"app.kubernetes.io/component":"backstage","app.kubernetes.io/instance":"backstage","app.kubernetes.io/name":"developer-hub"}},"template":{"metadata":{"annotations":{"checksum/app-config":"ffdfbaa1f83203ca6b6660c70849a4def02b6d7201712c5aa67f9a65764709ed","checksum/dynamic-plugins":"44a81981f044f7bffdcfa4d29276c27ce26c852b75a9b445a6e1c384eafef0ac"},"labels":{"app.kubernetes.io/component":"backstage","app.kubernetes.io/instance":"backstage","app.kubernetes.io/managed-by":"Helm","app.kubernetes.io/name":"developer-hub","helm.sh/chart":"upstream-1.9.1"}},"spec":{"containers":[{"args":["--config","dynamic-plugins-root/app-config.dynamic-plugins.yaml","--config","/opt/app-root/src/app-config-from-configmap.yaml"],"env":[{"name":"APP_CONFIG_backend_listen_port","value":"7007"},{"name":"POSTGRES_HOST","value":"backstage-postgresql"},{"name":"POSTGRES_PORT","value":"5432"},{"name":"POSTGRES_USER","value":"postgres"},{"name":"POSTGRES_PASSWORD","valueFrom":{"secretKeyRef":{"key":"postgres-password","name":"backstage-postgresql"}}},{"name":"NODE_OPTIONS","value":"--no-node-snapshot"},{"name":"BACKEND_SECRET","value":"QUNab0NDVTJabDZ0MUVmSE1HbWlESVBq"},{"name":"ORCHESTRATOR_TOKEN","valueFrom":{"secretKeyRef":{"key":"orchestrator-token","name":"backstage-orchestrator-token"}}},{"name":"APP_CONFIG_app_baseUrl","value":"https://backstage-backstage.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com"},{"name":"APP_CONFIG_backend_baseUrl","value":"https://backstage-backstage.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com"},{"name":"APP_CONFIG_backend_cors_origin","value":"https://backstage-backstage.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com"},{"name":"POSTGRES_ADMIN_PASSWORD","valueFrom":{"secretKeyRef":{"key":"postgres-password","name":"backstage-postgresql"}}},{"name":"NODE_TLS_REJECT_UNAUTHORIZED","value":"0"},{"name":"APP_CONFIG_catalog_providers_keycloakOrg_default_baseUrl","value":"https://keycloak-rhsso.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com/auth"},{"name":"APP_CONFIG_catalog_providers_keycloakOrg_default_loginRealm","value":"backstage"},{"name":"APP_CONFIG_catalog_providers_keycloakOrg_default_realm","value":"backstage"},{"name":"APP_CONFIG_catalog_providers_keycloakOrg_default_clientId","valueFrom":{"secretKeyRef":{"key":"CLIENT_ID","name":"keycloak-client-secret-backstage"}}},{"name":"APP_CONFIG_catalog_providers_keycloakOrg_default_clientSecret","valueFrom":{"secretKeyRef":{"key":"CLIENT_SECRET","name":"keycloak-client-secret-backstage"}}},{"name":"LOG_LEVEL","value":"debug"}],"image":"quay.io/rhdh/rhdh-hub-rhel9:1.4-160","imagePullPolicy":"Always","livenessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthcheck","port":7007,"scheme":"HTTP"},"initialDelaySeconds":60,"periodSeconds":10,"successThreshold":1,"timeoutSeconds":2},"name":"backstage-backend","ports":[{"containerPort":7007,"name":"backend","protocol":"TCP"}],"readinessProbe":{"failureThreshold":3,"httpGet":{"path":"/healthcheck","port":7007,"scheme":"HTTP"},"initialDelaySeconds":30,"periodSeconds":10,"successThreshold":2,"timeoutSeconds":2},"resources":{"limits":{"cpu":"1000m","ephemeral-storage":"5Gi","memory":"2.5Gi"},"requests":{"cpu":"250m","memory":"1Gi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"volumeMounts":[{"mountPath":"/opt/app-root/src/app-config-from-configmap.yaml","name":"backstage-app-config","subPath":"app-config.yaml"},{"mountPath":"/opt/app-root/src/dynamic-plugins-root","name":"dynamic-plugins-root"},{"mountPath":"/var/log/audit","name":"audit-log-data"}]},{"args":["--provider=oidc","--email-domain=*","--upstream=http://localhost:7007","--http-address=0.0.0.0:4180","--skip-provider-button","--insecure-oidc-allow-unverified-email=true"],"env":[{"name":"OAUTH2_PROXY_CLIENT_ID","valueFrom":{"secretKeyRef":{"key":"CLIENT_ID","name":"keycloak-client-secret-backstage"}}},{"name":"OAUTH2_PROXY_CLIENT_SECRET","valueFrom":{"secretKeyRef":{"key":"CLIENT_SECRET","name":"keycloak-client-secret-backstage"}}},{"name":"OAUTH2_PROXY_COOKIE_SECRET","value":"aGJnZGtzbWJwYnFjd2puaGppY214ZmNld3NubnZ6YWw="},{"name":"OAUTH2_PROXY_OIDC_ISSUER_URL","value":"https://keycloak-rhsso.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com/auth/realms/backstage"},{"name":"OAUTH2_PROXY_SSL_INSECURE_SKIP_VERIFY","value":"true"}],"image":"quay.io/oauth2-proxy/oauth2-proxy:latest","imagePullPolicy":"IfNotPresent","name":"oauth2-proxy","ports":[{"containerPort":4180,"name":"oauth2-proxy","protocol":"TCP"}]}],"imagePullSecrets":[{"name":"redhat-gpte-devhub-pull-secret"}],"initContainers":[{"command":["./install-dynamic-plugins.sh","/dynamic-plugins-root"],"env":[{"name":"NPM_CONFIG_USERCONFIG","value":"/opt/app-root/src/.npmrc.dynamic-plugins"}],"image":"quay.io/rhdh/rhdh-hub-rhel9:1.4-160","imagePullPolicy":"Always","name":"install-dynamic-plugins","resources":{"limits":{"cpu":"1000m","ephemeral-storage":"5Gi","memory":"2.5Gi"},"requests":{"cpu":"250m","memory":"256Mi"}},"securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"runAsNonRoot":true,"seccompProfile":{"type":"RuntimeDefault"}},"volumeMounts":[{"mountPath":"/dynamic-plugins-root","name":"dynamic-plugins-root"},{"mountPath":"/opt/app-root/src/dynamic-plugins.yaml","name":"dynamic-plugins","readOnly":true,"subPath":"dynamic-plugins.yaml"},{"mountPath":"/opt/app-root/src/.npmrc.dynamic-plugins","name":"dynamic-plugins-npmrc","readOnly":true,"subPath":".npmrc"},{"mountPath":"/opt/app-root/src/.config/containers","name":"dynamic-plugins-registry-auth","readOnly":true},{"mountPath":"/opt/app-root/src/.npm/_cacache","name":"npmcacache"}],"workingDir":"/opt/app-root/src"}],"serviceAccountName":"default","volumes":[{"name":"dynamic-plugins-root","persistentVolumeClaim":{"claimName":"backstage-dynamic-plugins-root"}},{"name":"audit-log-data","persistentVolumeClaim":{"claimName":"backstage-audit-log"}},{"configMap":{"defaultMode":420,"name":"backstage-dynamic-plugins","optional":true},"name":"dynamic-plugins"},{"name":"dynamic-plugins-npmrc","secret":{"defaultMode":420,"optional":true,"secretName":"backstage-dynamic-plugins-npmrc"}},{"name":"dynamic-plugins-registry-auth","secret":{"defaultMode":416,"optional":true,"secretName":"backstage-dynamic-plugins-registry-auth"}},{"emptyDir":{},"name":"npmcacache"},{"configMap":{"name":"backstage-developer-hub-app-config"},"name":"backstage-app-config"}]}}}}
+  creationTimestamp: "2025-05-08T19:50:19Z"
+  generation: 35
+  labels:
+    app.kubernetes.io/component: backstage
+    app.kubernetes.io/instance: backstage
+    app.kubernetes.io/managed-by: Helm
+    app.kubernetes.io/name: developer-hub
+    helm.sh/chart: upstream-1.9.1
+    rht-gitops.com/openshift-gitops: backstage
+  name: backstage-developer-hub
+  namespace: backstage
+  resourceVersion: "25047194"
+  uid: 726284a0-f8dc-4802-872a-c2b270d213ff
+spec:
+  progressDeadlineSeconds: 600
+  replicas: 1
+  revisionHistoryLimit: 10
+  selector:
+    matchLabels:
+      app.kubernetes.io/component: backstage
+      app.kubernetes.io/instance: backstage
+      app.kubernetes.io/name: developer-hub
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
+  template:
+    metadata:
+      annotations:
+        checksum/app-config: ffdfbaa1f83203ca6b6660c70849a4def02b6d7201712c5aa67f9a65764709ed
+        checksum/dynamic-plugins: 44a81981f044f7bffdcfa4d29276c27ce26c852b75a9b445a6e1c384eafef0ac
+      creationTimestamp: null
+      labels:
+        app.kubernetes.io/component: backstage
+        app.kubernetes.io/instance: backstage
+        app.kubernetes.io/managed-by: Helm
+        app.kubernetes.io/name: developer-hub
+        helm.sh/chart: upstream-1.9.1
+    spec:
+      containers:
+      - args:
+        - --config
+        - dynamic-plugins-root/app-config.dynamic-plugins.yaml
+        - --config
+        - /opt/app-root/src/app-config-from-configmap.yaml
+        env:
+        - name: APP_CONFIG_backend_listen_port
+          value: "7007"
+        - name: POSTGRES_HOST
+          value: backstage-postgresql
+        - name: POSTGRES_PORT
+          value: "5432"
+        - name: POSTGRES_USER
+          value: postgres
+        - name: POSTGRES_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: postgres-password
+              name: backstage-postgresql
+        - name: NODE_OPTIONS
+          value: --no-node-snapshot
+        - name: BACKEND_SECRET
+          value: QUNab0NDVTJabDZ0MUVmSE1HbWlESVBq
+        - name: ORCHESTRATOR_TOKEN
+          valueFrom:
+            secretKeyRef:
+              key: orchestrator-token
+              name: backstage-orchestrator-token
+        - name: APP_CONFIG_app_baseUrl
+          value: https://backstage-backstage.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com
+        - name: APP_CONFIG_backend_baseUrl
+          value: https://backstage-backstage.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com
+        - name: APP_CONFIG_backend_cors_origin
+          value: https://backstage-backstage.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com
+        - name: POSTGRES_ADMIN_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: postgres-password
+              name: backstage-postgresql
+        - name: NODE_TLS_REJECT_UNAUTHORIZED
+          value: "0"
+        - name: APP_CONFIG_catalog_providers_keycloakOrg_default_baseUrl
+          value: https://keycloak-rhsso.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com/auth
+        - name: APP_CONFIG_catalog_providers_keycloakOrg_default_loginRealm
+          value: backstage
+        - name: APP_CONFIG_catalog_providers_keycloakOrg_default_realm
+          value: backstage
+        - name: APP_CONFIG_catalog_providers_keycloakOrg_default_clientId
+          valueFrom:
+            secretKeyRef:
+              key: CLIENT_ID
+              name: keycloak-client-secret-backstage
+        - name: APP_CONFIG_catalog_providers_keycloakOrg_default_clientSecret
+          valueFrom:
+            secretKeyRef:
+              key: CLIENT_SECRET
+              name: keycloak-client-secret-backstage
+        - name: LOG_LEVEL
+          value: debug
+        image: quay.io/rhdh/rhdh-hub-rhel9:1.4-160
+        imagePullPolicy: Always
+        livenessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthcheck
+            port: 7007
+            scheme: HTTP
+          initialDelaySeconds: 60
+          periodSeconds: 10
+          successThreshold: 1
+          timeoutSeconds: 2
+        name: backstage-backend
+        ports:
+        - containerPort: 7007
+          name: backend
+          protocol: TCP
+        readinessProbe:
+          failureThreshold: 3
+          httpGet:
+            path: /healthcheck
+            port: 7007
+            scheme: HTTP
+          initialDelaySeconds: 30
+          periodSeconds: 10
+          successThreshold: 2
+          timeoutSeconds: 2
+        resources:
+          limits:
+            cpu: "1"
+            ephemeral-storage: 5Gi
+            memory: 2560Mi
+          requests:
+            cpu: 250m
+            memory: 1Gi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - name: backend-auth-config-volume
+          mountPath: /etc/backstage/auth-config
+        - mountPath: /opt/app-root/src/app-config-from-configmap.yaml
+          name: backstage-app-config
+          subPath: app-config.yaml
+        - mountPath: /opt/app-root/src/dynamic-plugins-root
+          name: dynamic-plugins-root
+        - mountPath: /var/log/audit
+          name: audit-log-data
+      - args:
+        - --provider=oidc
+        - --email-domain=*
+        - --upstream=http://localhost:7007
+        - --http-address=0.0.0.0:4180
+        - --skip-provider-button
+        - --insecure-oidc-allow-unverified-email=true
+        env:
+        - name: APP_CONFIG_PATH
+          value: "/etc/backstage/auth-config/backend-auth.yaml"
+        - name: OAUTH2_PROXY_CLIENT_ID
+          valueFrom:
+            secretKeyRef:
+              key: CLIENT_ID
+              name: keycloak-client-secret-backstage
+        - name: OAUTH2_PROXY_CLIENT_SECRET
+          valueFrom:
+            secretKeyRef:
+              key: CLIENT_SECRET
+              name: keycloak-client-secret-backstage
+        - name: OAUTH2_PROXY_COOKIE_SECRET
+          value: aGJnZGtzbWJwYnFjd2puaGppY214ZmNld3NubnZ6YWw=
+        - name: OAUTH2_PROXY_OIDC_ISSUER_URL
+          value: https://keycloak-rhsso.apps.cluster-h8p9j.h8p9j.sandbox1517.opentlc.com/auth/realms/backstage
+        - name: OAUTH2_PROXY_SSL_INSECURE_SKIP_VERIFY
+          value: "true"
+        image: quay.io/oauth2-proxy/oauth2-proxy:latest
+        imagePullPolicy: IfNotPresent
+        name: oauth2-proxy
+        ports:
+        - containerPort: 4180
+          name: oauth2-proxy
+          protocol: TCP
+        resources: {}
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+      dnsPolicy: ClusterFirst
+      imagePullSecrets:
+      - name: redhat-gpte-devhub-pull-secret
+      initContainers:
+      - command:
+        - ./install-dynamic-plugins.sh
+        - /dynamic-plugins-root
+        env:
+        - name: NPM_CONFIG_USERCONFIG
+          value: /opt/app-root/src/.npmrc.dynamic-plugins
+        image: quay.io/rhdh/rhdh-hub-rhel9:1.4-160
+        imagePullPolicy: Always
+        name: install-dynamic-plugins
+        resources:
+          limits:
+            cpu: "1"
+            ephemeral-storage: 5Gi
+            memory: 2560Mi
+          requests:
+            cpu: 250m
+            memory: 256Mi
+        securityContext:
+          allowPrivilegeEscalation: false
+          capabilities:
+            drop:
+            - ALL
+          runAsNonRoot: true
+          seccompProfile:
+            type: RuntimeDefault
+        terminationMessagePath: /dev/termination-log
+        terminationMessagePolicy: File
+        volumeMounts:
+        - mountPath: /dynamic-plugins-root
+          name: dynamic-plugins-root
+        - mountPath: /opt/app-root/src/dynamic-plugins.yaml
+          name: dynamic-plugins
+          readOnly: true
+          subPath: dynamic-plugins.yaml
+        - mountPath: /opt/app-root/src/.npmrc.dynamic-plugins
+          name: dynamic-plugins-npmrc
+          readOnly: true
+          subPath: .npmrc
+        - mountPath: /opt/app-root/src/.config/containers
+          name: dynamic-plugins-registry-auth
+          readOnly: true
+        - mountPath: /opt/app-root/src/.npm/_cacache
+          name: npmcacache
+        workingDir: /opt/app-root/src
+      restartPolicy: Always
+      schedulerName: default-scheduler
+      securityContext: {}
+      serviceAccount: default
+      serviceAccountName: default
+      terminationGracePeriodSeconds: 30
+      volumes:
+      - name: backend-auth-config-volume # Choose a descriptive name for the volume
+        configMap:
+          name: backstage-backend-auth-config
+      - name: dynamic-plugins-root
+        persistentVolumeClaim:
+          claimName: backstage-dynamic-plugins-root
+      - name: audit-log-data
+        persistentVolumeClaim:
+          claimName: backstage-audit-log
+      - configMap:
+          defaultMode: 420
+          name: backstage-dynamic-plugins
+          optional: true
+        name: dynamic-plugins
+      - name: dynamic-plugins-npmrc
+        secret:
+          defaultMode: 420
+          optional: true
+          secretName: backstage-dynamic-plugins-npmrc
+      - name: dynamic-plugins-registry-auth
+        secret:
+          defaultMode: 416
+          optional: true
+          secretName: backstage-dynamic-plugins-registry-auth
+      - emptyDir: {}
+        name: npmcacache
+      - configMap:
+          defaultMode: 420
+          name: backstage-developer-hub-app-config
+        name: backstage-app-config
+status:
+  availableReplicas: 1
+  conditions:
+  - lastTransitionTime: "2025-06-16T15:55:18Z"
+    lastUpdateTime: "2025-06-16T15:55:18Z"
+    message: Deployment has minimum availability.
+    reason: MinimumReplicasAvailable
+    status: "True"
+    type: Available
+  - lastTransitionTime: "2025-05-16T02:51:49Z"
+    lastUpdateTime: "2025-06-16T19:30:14Z"
+    message: ReplicaSet "backstage-developer-hub-d48f5b984" has successfully progressed.
+    reason: NewReplicaSetAvailable
+    status: "True"
+    type: Progressing
+  observedGeneration: 35
+  readyReplicas: 1
+  replicas: 1
+  updatedReplicas: 1
