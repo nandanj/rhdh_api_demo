@@ -1,5 +1,6 @@
 
-API_BASE_URL="https://backstage-backstage.apps.cluster-tvwbg.tvwbg.sandbox1943.opentlc.com"
+#API_BASE_URL="https://backstage-backstage.apps.cluster-tvwbg.tvwbg.sandbox1943.opentlc.com"
+API_BASE_URL="https://backstage-backstage.apps.cluster-zkmpx.zkmpx.sandbox2151.opentlc.com"
 BEARER_TOKEN="foobarbaz"
 HOST="gitlab-gitlab.apps.cluster-tvwbg.tvwbg.sandbox1943.opentlc.com"
 
@@ -8,19 +9,40 @@ HOST="gitlab-gitlab.apps.cluster-tvwbg.tvwbg.sandbox1943.opentlc.com"
 #   -H "Content-Type: application/json" \
 #   -H "Authorization: Bearer $BEARER_TOKEN"
 
-# execute a workflow for creating a namespace
+
+BEARER_TOKEN="foobarbaz"
+API_BASE_URL="https://backstage-backstage.apps.cluster-zkmpx.zkmpx.sandbox2151.opentlc.com"
+#API_BASE_URL="https://api.cluster-tvwbg.tvwbg.sandbox1943.opentlc.com:6443"
 curl -k -X POST "$API_BASE_URL/api/orchestrator/v2/workflows/create-ocp-namespace-swt/execute" \
   -H "Content-Type: application/json" \
-  -H "Authorization: Bearer $BEARER_TOKEN" \
-  -d '{
-        "namespace": "dev1-small-5",
-        "requester": "dev1",
-        "size": "small",
-        "reason": "Need a small namespace for project X",
-        "recipients": [
-        "user:default/dev1"
-        ]
-      }'
+  -H "Authorization: BEARER $BEARER_TOKEN" \
+-d '{
+  "inputData": {
+    "namespace": "dev1-small-2",
+    "requester": "dev1",
+    "size": "small",
+    "reason": "Need a small namespace for project X",
+    "recipients": [
+    "user:default/dev1"
+    ]
+  }
+}'
+
+
+
+# execute a workflow for creating a namespace
+# curl -k -X POST "$API_BASE_URL/api/orchestrator/v2/workflows/create-ocp-namespace-swt/execute" \
+#   -H "Content-Type: application/json" \
+#   -H "Authorization: Bearer $BEARER_TOKEN" \
+#   -d '{
+#         "namespace": "dev1-small-5",
+#         "requester": "dev1",
+#         "size": "small",
+#         "reason": "Need a small namespace for project X",
+#         "recipients": [
+#         "user:default/dev1"
+#         ]
+#       }'
 #         "templateRef": "template:default/quarkus-web-template-api-compat-gitlab",
 #         "values": {
 #           "component_id": "my-gamma-test",
